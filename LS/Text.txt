@@ -1,0 +1,32 @@
+1. 패킷의 기본 Receive 크기는 1024바이트.
+2. 서버의 경우 다음과 같은 초기화 과정이 필요함.
+
+-	CNetworkManager* pManager = CNetworkManager::GetInstance(); 구문 작성으로 싱글턴 인스턴스 생성
+
+-	pManager->Initialize(true) 구문 작성으로 서버 생성에 필요한 초기화작업 진행
+
+-	CNetworkPacketHub 클래스를 상속받아서, Read()오버라이딩으로 Decoding 함수 작성
+
+-	SetDecoderClass<Decoder_Class_Type>() 구문으로 해석용 클래스 등록. 
+	Decoder_Class는 항상 CNetworkPacketHub 클래스를 상속받는 클래스여야 하고, CNetworkPacketHub로 업캐스팅이 가능해야한다.
+
+-	pManager->Update(); 구문 작성으로 Accept 및 기타 패킷 송수신에 필요한 작업 수행
+
+
+-	CNetworkManager::DestroyInstance(); 구문 작성으로 싱글턴 인스턴스 제거
+
+
+
+
+3. 클라이언트의 경우 다음과 같은 초기화 과정이 필요함
+
+-	CNetworkManager* pManager = CNetworkManager::GetInstance(); 구문 작성으로 싱글턴 인스턴스 생성
+
+-	pManager->Initialize(true, string("IP.IP.IP.IP")) 구문 작성으로 서버 접속에 필요한 초기화작업 진행 및 워커 스레드 생성으로 아래의 함수 실행.
+
+-	CNetworkPacketHub 클래스를 상속받아서, Read()오버라이딩으로 Decoding 함수 작성
+
+-	SetDecoderClass<Decoder_Class_Type>() 구문으로 해석용 클래스 등록. 
+	Decoder_Class는 항상 CNetworkPacketHub 클래스를 상속받는 클래스여야 하고, CNetworkPacketHub로 업캐스팅이 가능해야한다.
+
+-	CNetworkManager::DestroyInstance(); 구문 작성으로 싱글턴 인스턴스 제거
