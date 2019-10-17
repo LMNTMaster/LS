@@ -16,9 +16,11 @@ void CDecoder::Read(CNetworkSession* pSession, CPacket* pPacket)
 	case PACKET_FUCNTION_CALL :
 	{
 		void* fpAddress = nullptr;
-		memcpy(&fpAddress, pPacket->GetBuffer(), sizeof(void*));
 		void* pThis = nullptr;
+
+		memcpy(&fpAddress, pPacket->GetBuffer(), sizeof(void*));
 		memcpy(&pThis, (char*)(pPacket->GetBuffer()) + sizeof(void*), sizeof(void*));
+
 		((int(*)(void*))fpAddress)(pThis);
 	}
 		break;
@@ -27,8 +29,6 @@ void CDecoder::Read(CNetworkSession* pSession, CPacket* pPacket)
 		std::cout << pPacket->GetBuffer() << std::endl;
 	}
 		break;
-
-
 	}
 }
 
@@ -45,7 +45,6 @@ void main()
 
 	CNetworkManager* pManager = CNetworkManager::GetInstance();
 
-	bool aa = std::is_convertible<CDecoder, CNetworkPacketHub>();
 	if (pManager)
 	{
 		//if (pManager->Initialize(false, "121.168.225.13"))

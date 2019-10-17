@@ -51,6 +51,9 @@
     <ClInclude Include="NetworkPacketHub.h">
       <Filter>소스 파일\01. NetworkManager</Filter>
     </ClInclude>
+    <ClInclude Include="CommandThread.h">
+      <Filter>소스 파일\04. NetworkThread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkManager.cpp">
@@ -70,6 +73,9 @@
     </ClCompile>
     <ClCompile Include="NetworkPacketHub.cpp">
       <Filter>소스 파일\01. NetworkManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandThread.cpp">
+      <Filter>소스 파일\04. NetworkThread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

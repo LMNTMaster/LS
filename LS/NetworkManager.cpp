@@ -1,6 +1,7 @@
 #include "NetworkManager.h"
 #include "NetworkThread.h"
 #include "NetworkSession.h"
+#include "CommandThread.h"
 
 CNetworkManager* CNetworkManager::m_pInstance = null;
 bool CNetworkManager::m_bLoop = true;
@@ -83,6 +84,7 @@ CNetworkManager::CNetworkManager()
 	WSADATA tData = {};
 	WSAStartup(MAKEWORD(2, 2), &tData);
 	
+	m_pCommandThread = nullptr;
 }
 
 
@@ -228,21 +230,17 @@ bool CNetworkManager::Initialize(bool isServer, std::string targetServerAddress)
 	{
 
 		m_hCompletionPort = CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0, 0);
-
-
-		SetDecoderClass<CNetworkPacketHub>();
-
+		
 		//Listen Session 생성
 		//연결 요청을 받아주는 역할을 한다.
 		m_pListen = new CNetworkSession;
 		m_pListen->CreateListen(PORT);
-
-
+		
 
 		SYSTEM_INFO tInfo;
 		GetSystemInfo(&tInfo);
-
-		for (size_t i = 0; i < tInfo.dwNumberOfProcessors; ++i)
+		
+		for (size_t i = 0; i < tInfo.dwNumberOfProcessors - 1; ++i)
 		{
 			CNetworkThread* pThread = new CNetworkThread;
 			pThread->SetCompletionPort(m_hCompletionPort);
@@ -262,11 +260,13 @@ bool CNetworkManager::Initialize(bool isServer, std::string targetServerAddress)
 			tAddress.sin_family = AF_INET;
 			tAddress.sin_port = htons(PORT);
 			tAddress.sin_addr.s_addr = inet_addr(targetServerAddress.c_str());
-			
+
 			connect(m_hSocket, (SOCKADDR*)&tAddress, sizeof(tAddress));
 
 			m_hThread = (HANDLE)_beginthreadex(0, 0, CNetworkManager::ClientLoopProcedure, this, 0, 0);
 		}
+		else
+			return false;
 	}
 	if (WSAGetLastError() != 0)
 	{

@@ -66,6 +66,7 @@ private:
 	static bool m_bLoop;
 	static unsigned int CALLBACK ClientLoopProcedure(void* pThis);
 	SOCKET GetSocket() const;
+
 public:
 	CPacket* GetReadPacket();
 	CPacket* GetWritePacket();
@@ -83,12 +84,23 @@ private:
 	class CNetworkSession* m_pListen;
 	std::unordered_map<SOCKET, CNetworkSession*> m_mapClientSession;
 	std::vector<class CNetworkThreadBase*> m_vecThread;
+	class CCommandThread* m_pCommandThread;
 
 public:
 	bool Initialize(bool isServer = false, std::string targetServerAddress = "");
 	void Update();
+	
 
 public:
+	template<typename T>
+	void SetCommandFunction()
+	{
+		m_pCommandThread = static_cast<class CCommandThread*>(new T);
+
+		m_pCommandThread->
+	}
+
+
 	void AddClient(SOCKET hSocket, CNetworkSession* pSession);
 	void RemoveClient(SOCKET hSocket);
 	const CNetworkSession* GetClientSession(SOCKET hSocket) const;

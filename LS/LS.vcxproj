@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CommandThread.h" />
     <ClInclude Include="Core.h" />
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="NetworkPacketHub.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Packet.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandThread.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="NetworkPacketHub.cpp" />
     <ClCompile Include="NetworkSession.cpp" />
